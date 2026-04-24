@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.*
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var player: ExoPlayer
@@ -22,13 +24,27 @@ class PlayerActivity : AppCompatActivity() {
         playerView.player = player
 
         val playbackUrl = intent.getStringExtra("playbackUrl")
-        playSessionId = intent.getStringExtra("playSessionId") ?: ""
+        playSessionId = intent.getStringExtra("playSessionId") ?: PlayerUtils.generatePlaySessionId()
 
         if (playbackUrl != null) {
-            val mediaItem = MediaItem.fromUri(playbackUrl)
-            player.setMediaItem(mediaItem)
-            player.prepare()
-            player.play()
+            CoroutineScope(Dispatchers.Main).launch {
+                val actualUrl = if (playbackUrl.endsWith(".strm")) {
+                    // Handle STRM file
+                    PlayerUtils.parseStrmFile(playbackUrl)
+                } else {
+                    playbackUrl
+                }
+
+                if (actualUrl != null) {
+                    val mediaItem = MediaItem.fromUri(actualUrl)
+                    player.setMediaItem(mediaItem)
+                    player.prepare()
+                    player.play()
+                } else {
+                    Toast.makeText(this@PlayerActivity, "Failed to parse STRM file", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
         } else {
             Toast.makeText(this, "No playback URL provided", Toast.LENGTH_SHORT).show()
             finish()
