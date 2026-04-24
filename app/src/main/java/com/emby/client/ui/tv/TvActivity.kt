@@ -7,5 +7,12 @@ class TvActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tv)
+
+        if (savedInstanceState == null) {
+            val fragment = TvHomeFragment()
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+        }
     }
 }
