@@ -1,12 +1,16 @@
 package com.emby.client.utils
 
-import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 
 object DeviceUtils {
     fun isTv(context: Context): Boolean {
-        val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
-        return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            val uiMode = context.resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK
+            uiMode == Configuration.UI_MODE_TYPE_TELEVISION
+        } else {
+            false
+        }
     }
 }
