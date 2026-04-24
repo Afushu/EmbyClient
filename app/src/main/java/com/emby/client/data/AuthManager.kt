@@ -22,18 +22,44 @@ object AuthManager {
 
     fun addServer(context: Context, server: ServerProfile) {
         val servers = getServers(context).toMutableList()
-        servers.removeAll { it.url == server.url && it.username == server.username }
+        servers.removeAll { it.id == server.id }
         servers.add(server)
         getPrefs(context).edit().putString(KEY_SERVERS, Gson().toJson(servers)).apply()
         setActiveServerId(context, server.id)
+    }
+
+    fun updateServer(context: Context, server: ServerProfile) {
+        val servers = getServers(context).toMutableList()
+        val index = servers.indexOfFirst { it.id == server.id }
+        if (index != -1) {
+            servers[index] = server
+            getPrefs(context).edit().putString(KEY_SERVERS, Gson().toJson(servers)).apply()
+        }
+    }
+
+    fun removeServer(context: Context, serverId: String) {
+        val servers = getServers(context).toMutableList()
+        servers.removeAll { it.id == serverId }
+        getPrefs(context).edit().putString(KEY_SERVERS, Gson().toJson(servers)).apply()
+        if (getActiveServerId(context) == serverId) {
+            if (servers.isNotEmpty()) {
+                setActiveServerId(context, servers[0].id)
+            } else {
+                logout(context)
+            }
+        }
     }
 
     fun setActiveServerId(context: Context, id: String) {
         getPrefs(context).edit().putString(KEY_ACTIVE_SERVER_ID, id).apply()
     }
 
+    fun getActiveServerId(context: Context): String? {
+        return getPrefs(context).getString(KEY_ACTIVE_SERVER_ID, null)
+    }
+
     fun getActiveServer(context: Context): ServerProfile? {
-        val id = getPrefs(context).getString(KEY_ACTIVE_SERVER_ID, null) ?: return null
+        val id = getActiveServerId(context) ?: return null
         return getServers(context).find { it.id == id }
     }
 
