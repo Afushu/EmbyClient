@@ -3,6 +3,7 @@ package com.emby.client.ui.mobile
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import com.emby.client.R
 
 class MobileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

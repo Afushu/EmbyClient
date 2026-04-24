@@ -14,8 +14,10 @@ class GestureDetector(context: Context, private val listener: GestureListener) :
     }
 
     private val detector = GestureDetector(context, this)
+    private var attachedView: View? = null
 
     fun attachToView(view: View) {
+        attachedView = view
         view.setOnTouchListener { _, event ->
             detector.onTouchEvent(event)
         }
@@ -35,7 +37,7 @@ class GestureDetector(context: Context, private val listener: GestureListener) :
             listener.onHorizontalSwipe(deltaX)
         } else {
             // Vertical swipe (volume/brightness control)
-            val screenWidth = e1.view?.width ?: 1080
+            val screenWidth = attachedView?.width ?: 1080
             val touchX = e1.x
             
             if (touchX < screenWidth / 2) {

@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
         binding = com.emby.client.databinding.ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        editingServer = intent.getParcelableExtra("server")
+        editingServer = intent.getSerializableExtra("server") as? ServerProfile
         if (editingServer != null) {
             binding.etServerUrl.setText(editingServer!!.url)
             binding.etUsername.setText(editingServer!!.username)

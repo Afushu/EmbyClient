@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.*
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.emby.client.R
 import com.emby.client.data.AuthManager
 import com.emby.client.network.EmbyService
 import kotlinx.coroutines.CoroutineScope

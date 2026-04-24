@@ -46,7 +46,7 @@ class TvDetailsFragment : DetailsSupportFragment() {
         mPresenterSelector = ClassPresenterSelector()
 
         val detailsPresenter = FullWidthDetailsOverviewRowPresenter(DetailsDescriptionPresenter())
-        detailsPresenter.backgroundColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_primary)
+        detailsPresenter.backgroundColor = ContextCompat.getColor(requireContext(), R.color.primary)
         detailsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_HALF
         
         detailsPresenter.setOnActionClickedListener { action ->

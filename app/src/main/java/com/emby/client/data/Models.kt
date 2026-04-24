@@ -1,5 +1,7 @@
 package com.emby.client.data
 
+import java.io.Serializable
+
 data class AuthRequest(val Username: String, val Pw: String)
 data class AuthResponse(val AccessToken: String, val User: UserDto)
 data class UserDto(val Id: String, val Name: String)
@@ -34,4 +36,4 @@ data class ServerProfile(
     val username: String,
     val token: String,
     val userId: String
-)
+) : Serializable

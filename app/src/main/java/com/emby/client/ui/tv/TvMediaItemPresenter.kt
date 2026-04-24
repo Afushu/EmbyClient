@@ -2,6 +2,7 @@ package com.emby.client.ui.tv
 
 import android.view.ViewGroup
 import androidx.leanback.widget.Presenter
+import com.emby.client.R
 import com.emby.client.data.BaseItemDto
 import android.view.LayoutInflater
 import android.view.View

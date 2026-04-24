@@ -26,7 +26,7 @@ class CardPresenter(private val serverUrl: String) : Presenter() {
     }
 
     private fun updateCardBackgroundColor(view: ImageCardView, selected: Boolean) {
-        val color = ContextCompat.getColor(view.context, if (selected) R.color.design_default_color_primary else R.color.material_dynamic_neutral10)
+        val color = ContextCompat.getColor(view.context, if (selected) R.color.primary else R.color.neutral10)
         view.infoAreaBackground = null
         view.setBackgroundColor(color)
     }

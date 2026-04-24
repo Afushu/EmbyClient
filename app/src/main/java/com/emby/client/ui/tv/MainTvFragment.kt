@@ -21,7 +21,7 @@ class MainTvFragment : BrowseSupportFragment() {
         title = getString(R.string.title_tv)
         headersState = HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
-        brandColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.design_default_color_primary)
+        brandColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.primary)
         
         loadData()
         setupEventListeners()
