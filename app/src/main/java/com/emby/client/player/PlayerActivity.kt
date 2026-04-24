@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.*
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.emby.client.data.AuthManager
+import com.emby.client.network.EmbyService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +18,7 @@ class PlayerActivity : AppCompatActivity(), GestureDetector.GestureListener {
     private lateinit var player: ExoPlayer
     private lateinit var playerView: PlayerView
     private var playSessionId: String = ""
+    private var itemId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,7 @@ class PlayerActivity : AppCompatActivity(), GestureDetector.GestureListener {
         gestureDetector.attachToView(playerView)
 
         val playbackUrl = intent.getStringExtra("playbackUrl")
+        itemId = intent.getStringExtra("itemId") ?: ""
         playSessionId = intent.getStringExtra("playSessionId") ?: PlayerUtils.generatePlaySessionId()
 
         if (playbackUrl != null) {
@@ -72,6 +76,14 @@ class PlayerActivity : AppCompatActivity(), GestureDetector.GestureListener {
                 // Report progress when play/pause state changes
                 reportProgress()
             }
+
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                super.onPlaybackStateChanged(playbackState)
+                if (playbackState == Player.STATE_ENDED) {
+                    // Report completed playback
+                    reportProgress()
+                }
+            }
         })
     }
 
@@ -106,17 +118,33 @@ class PlayerActivity : AppCompatActivity(), GestureDetector.GestureListener {
     }
 
     private fun reportProgress() {
-        // Implement progress reporting to Emby server
-        // This will be implemented in a later step
+        if (itemId.isEmpty()) return
+
+        val serverProfile = AuthManager.getActiveServer(this)
+        if (serverProfile == null) return
+
+        val positionTicks = player.currentPosition * 10000 // Convert milliseconds to ticks
+        val isPaused = !player.isPlaying
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val service = EmbyService(serverProfile)
+                service.reportProgress(itemId, positionTicks, isPaused, playSessionId)
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
         player.pause()
+        reportProgress()
     }
 
     override fun onStop() {
         super.onStop()
+        reportProgress()
         player.release()
     }
 }
