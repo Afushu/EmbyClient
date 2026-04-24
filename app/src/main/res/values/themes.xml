@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.EmbyClient" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">#52B54B</item>
+        <item name="colorPrimaryVariant">#3D8A37</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+    </style>
+
+    <style name="Theme.EmbyClient.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.EmbyClient.Fullscreen" parent="Theme.EmbyClient.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Theme.Leanback" parent="Theme.Leanback">
+        <item name="colorPrimary">#52B54B</item>
+    </style>
+</resources>
