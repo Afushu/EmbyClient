@@ -42,7 +42,7 @@ dependencies {
     // TV Leanback
     implementation("androidx.leanback:leanback:1.0.0")
 
-    // MVVM
+    // MVVM & Coroutines
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.activity:activity-ktx:1.8.0")
@@ -60,4 +60,7 @@ dependencies {
     
     // Glide for images
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 }
