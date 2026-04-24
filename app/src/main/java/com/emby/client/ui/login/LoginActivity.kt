@@ -18,11 +18,18 @@ import java.util.UUID
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: com.emby.client.databinding.ActivityLoginBinding
+    private var editingServer: ServerProfile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = com.emby.client.databinding.ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        editingServer = intent.getParcelableExtra("server")
+        if (editingServer != null) {
+            binding.etServerUrl.setText(editingServer!!.url)
+            binding.etUsername.setText(editingServer!!.username)
+        }
 
         binding.btnLogin.setOnClickListener {
             val serverUrl = binding.etServerUrl.text.toString().trim()
@@ -36,6 +43,10 @@ class LoginActivity : AppCompatActivity() {
 
             login(serverUrl, username, password)
         }
+
+        binding.btnServerList.setOnClickListener {
+            startActivity(Intent(this, ServerListActivity::class.java))
+        }
     }
 
     private fun login(serverUrl: String, username: String, password: String) {
@@ -47,14 +58,18 @@ class LoginActivity : AppCompatActivity() {
                 val authResponse: AuthResponse = api.authenticate(authRequest, authHeader)
 
                 val serverProfile = ServerProfile(
-                    id = UUID.randomUUID().toString(),
+                    id = editingServer?.id ?: UUID.randomUUID().toString(),
                     url = serverUrl,
                     username = username,
                     token = authResponse.AccessToken,
                     userId = authResponse.User.Id
                 )
 
-                AuthManager.addServer(this@LoginActivity, serverProfile)
+                if (editingServer != null) {
+                    AuthManager.updateServer(this@LoginActivity, serverProfile)
+                } else {
+                    AuthManager.addServer(this@LoginActivity, serverProfile)
+                }
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
