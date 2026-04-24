@@ -1,6 +1,8 @@
 package com.emby.client.player
 
+import android.content.Context
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.*
@@ -10,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(), GestureDetector.GestureListener {
     private lateinit var player: ExoPlayer
     private lateinit var playerView: PlayerView
     private var playSessionId: String = ""
@@ -19,9 +21,16 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
+        // Keep screen on
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         playerView = findViewById(R.id.player_view)
         player = ExoPlayer.Builder(this).build()
         playerView.player = player
+
+        // Setup gesture detector
+        val gestureDetector = GestureDetector(this, this)
+        gestureDetector.attachToView(playerView)
 
         val playbackUrl = intent.getStringExtra("playbackUrl")
         playSessionId = intent.getStringExtra("playSessionId") ?: PlayerUtils.generatePlaySessionId()
@@ -64,6 +73,36 @@ class PlayerActivity : AppCompatActivity() {
                 reportProgress()
             }
         })
+    }
+
+    override fun onHorizontalSwipe(distance: Float) {
+        // Handle horizontal swipe for progress control
+        val currentPosition = player.currentPosition
+        val duration = player.duration
+        if (duration > 0) {
+            val seekAmount = (distance * 1000).toLong() // 1 second per 100 pixels
+            val newPosition = currentPosition + seekAmount
+            player.seekTo(Math.max(0, Math.min(newPosition, duration)))
+        }
+    }
+
+    override fun onVerticalSwipeLeft(distance: Float) {
+        // Handle vertical swipe on left side for brightness control
+        val layoutParams = window.attributes
+        val currentBrightness = layoutParams.screenBrightness
+        val newBrightness = Math.max(0.1f, Math.min(currentBrightness + distance / 1000, 1.0f))
+        layoutParams.screenBrightness = newBrightness
+        window.attributes = layoutParams
+    }
+
+    override fun onVerticalSwipeRight(distance: Float) {
+        // Handle vertical swipe on right side for volume control
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+        val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+        val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+        val volumeChange = (distance / 100).toInt()
+        val newVolume = Math.max(0, Math.min(currentVolume + volumeChange, maxVolume))
+        audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, newVolume, 0)
     }
 
     private fun reportProgress() {
