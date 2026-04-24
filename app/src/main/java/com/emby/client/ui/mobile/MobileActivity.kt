@@ -41,9 +41,13 @@ class MobileActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         
         adapter = MobileAdapter(activeServer!!.url) { item ->
-            if (item.IsFolder) {
-                // Navigate into folder - simplified for MVP
-                Toast.makeText(this, "Folder navigation not fully implemented in MVP", Toast.LENGTH_SHORT).show()
+            if (item.IsFolder || item.Type == "Series") {
+                val intent = Intent(this, MobileDetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", item.Id)
+                    putExtra("ITEM_TYPE", item.Type)
+                    putExtra("PARENT_ID", item.ParentIndexNumber?.toString() ?: "")
+                }
+                startActivity(intent)
             } else {
                 val streamUrl = "${activeServer!!.url}/Videos/${item.Id}/stream.mp4?Static=true&api_key=${activeServer!!.token}"
                 val intent = Intent(this, PlayerActivity::class.java).apply {
@@ -52,6 +56,9 @@ class MobileActivity : AppCompatActivity() {
                     putExtra("SERVER_URL", activeServer!!.url)
                     putExtra("TOKEN", activeServer!!.token)
                     putExtra("USER_ID", activeServer!!.userId)
+                    item.UserData?.PlaybackPositionTicks?.let { ticks ->
+                        putExtra("POSITION_TICKS", ticks)
+                    }
                 }
                 startActivity(intent)
             }

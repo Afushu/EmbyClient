@@ -64,8 +64,13 @@ class MainTvFragment : BrowseSupportFragment() {
     private fun setupEventListeners() {
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
             if (item is BaseItemDto) {
-                if (item.IsFolder) {
-                    Toast.makeText(requireContext(), "Folder navigation not fully implemented in MVP", Toast.LENGTH_SHORT).show()
+                if (item.IsFolder || item.Type == "Series") {
+                    val intent = Intent(requireContext(), TvDetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", item.Id)
+                        putExtra("ITEM_TYPE", item.Type)
+                        putExtra("PARENT_ID", item.ParentIndexNumber?.toString() ?: "")
+                    }
+                    startActivity(intent)
                 } else {
                     val activeServer = AuthManager.getActiveServer(requireContext())
                     if (activeServer != null) {
@@ -79,6 +84,9 @@ class MainTvFragment : BrowseSupportFragment() {
                             putExtra("SERVER_URL", activeServer.url)
                             putExtra("TOKEN", activeServer.token)
                             putExtra("USER_ID", activeServer.userId)
+                            item.UserData?.PlaybackPositionTicks?.let { ticks ->
+                                putExtra("POSITION_TICKS", ticks)
+                            }
                         }
                         startActivity(intent)
                     }

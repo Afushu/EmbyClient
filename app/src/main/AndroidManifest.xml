@@ -35,8 +35,10 @@
         </activity>
 
         <activity android:name=".ui.mobile.MobileActivity" android:exported="false" android:theme="@style/Theme.EmbyClient.NoActionBar"/>
+        <activity android:name=".ui.mobile.MobileDetailsActivity" android:exported="false" android:theme="@style/Theme.EmbyClient.NoActionBar"/>
         <activity android:name=".ui.login.LoginActivity" android:exported="false" android:theme="@style/Theme.EmbyClient.NoActionBar"/>
         <activity android:name=".ui.tv.TvActivity" android:exported="false" android:theme="@style/Theme.Leanback"/>
+        <activity android:name=".ui.tv.TvDetailsActivity" android:exported="false" android:theme="@style/Theme.Leanback"/>
         <activity 
             android:name=".player.PlayerActivity" 
             android:exported="false" 

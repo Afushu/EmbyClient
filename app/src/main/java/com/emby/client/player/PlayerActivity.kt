@@ -43,10 +43,12 @@ class PlayerActivity : AppCompatActivity() {
         token = intent.getStringExtra("TOKEN")
         userId = intent.getStringExtra("USER_ID")
 
-        initializePlayer(videoUrl)
+        val positionTicks = intent.getLongExtra("POSITION_TICKS", 0L)
+
+        initializePlayer(videoUrl, positionTicks)
     }
 
-    private fun initializePlayer(url: String) {
+    private fun initializePlayer(url: String, startPositionTicks: Long) {
         if (url.isEmpty()) return
 
         player = ExoPlayer.Builder(this).build()
@@ -56,6 +58,10 @@ class PlayerActivity : AppCompatActivity() {
             val finalUrl = resolveStrmIfNecessary(url)
             val mediaItem = MediaItem.fromUri(finalUrl)
             player?.setMediaItem(mediaItem)
+            if (startPositionTicks > 0) {
+                // Convert ticks to milliseconds (1 tick = 100 ns)
+                player?.seekTo(startPositionTicks / 10000)
+            }
             player?.prepare()
             player?.playWhenReady = true
 
