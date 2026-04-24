@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".ui.login.LoginActivity">
 
     <TextView
@@ -47,6 +46,15 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:backgroundTint="@color/primary"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnServerList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Server List"
+        android:backgroundTint="@color/secondary"
         android:textColor="@android:color/white"/>
 
 </LinearLayout>
