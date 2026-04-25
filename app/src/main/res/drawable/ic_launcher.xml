@@ -4,13 +4,20 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- 背景 -->
+    <rect
+        android:width="108"
+        android:height="108"
+        android:fillColor="#FFFFFF" />
+    <!-- 蓝色部分 -->
     <path
         android:fillColor="#1E40AF"
-        android:pathData="M20,20h68v68h-68z" />
+        android:pathData="M20,25 L85,25 L70,85 L20,85 Z" />
     <path
         android:fillColor="#1E40AF"
-        android:pathData="M80,20L30,80H20L70,20H80Z" />
+        android:pathData="M85,25 L70,85 L40,55 L55,25 L85,25 Z" />
+    <!-- 橙色部分 -->
     <path
         android:fillColor="#F97316"
-        android:pathData="M70,20L40,50L30,60L20,70L20,60L30,50L40,40L50,30L60,20H70Z" />
+        android:pathData="M55,25 L40,55 L35,60 L30,50 L45,25 L55,25 Z" />
 </vector>
