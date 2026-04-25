@@ -16,6 +16,7 @@ import com.emby.client.data.AuthManager
 import com.emby.client.data.BaseItemDto
 import com.emby.client.player.PlayerActivity
 import com.emby.client.viewmodel.MainViewModel
+import com.emby.client.viewmodel.MainViewModelFactory
 import kotlinx.coroutines.launch
 
 class TvHomeFragment : BrowseSupportFragment() {
@@ -29,7 +30,10 @@ class TvHomeFragment : BrowseSupportFragment() {
         headersState = HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
 
-        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            MainViewModelFactory(requireContext())
+        ).get(MainViewModel::class.java)
         adapter = rowsAdapter
 
         // Observe data

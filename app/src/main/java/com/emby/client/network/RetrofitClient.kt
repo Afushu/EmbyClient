@@ -7,10 +7,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    private var retrofit: Retrofit? = null
+    private val retrofitMap = mutableMapOf<String, Retrofit>()
 
     fun getClient(baseUrl: String): EmbyApi {
-        if (retrofit == null || retrofit?.baseUrl()?.toString() != baseUrl) {
+        val normalizedUrl = if (baseUrl.endsWith("/")) baseUrl else "$baseUrl/"
+        
+        if (!retrofitMap.containsKey(normalizedUrl)) {
             val logging = HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
@@ -21,12 +23,15 @@ object RetrofitClient {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
-            retrofit = Retrofit.Builder()
-                .baseUrl(if (baseUrl.endsWith("/")) baseUrl else "$baseUrl/")
+            val retrofit = Retrofit.Builder()
+                .baseUrl(normalizedUrl)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+            
+            retrofitMap[normalizedUrl] = retrofit
         }
-        return retrofit!!.create(EmbyApi::class.java)
+        
+        return retrofitMap[normalizedUrl]!!.create(EmbyApi::class.java)
     }
 }
