@@ -13,8 +13,8 @@
         android:text="Emby Client"
         android:textSize="24sp"
         android:textAlignment="center"
-        android:marginTop="32dp"
-        android:marginBottom="32dp"/>
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"/>
 
     <EditText
         android:id="@+id/etServerUrl"
