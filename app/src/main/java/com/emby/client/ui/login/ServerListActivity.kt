@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -16,11 +18,14 @@ import com.emby.client.databinding.ActivityServerListBinding
 class ServerListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServerListBinding
     private lateinit var serverAdapter: ServerAdapter
+    private lateinit var emptyState: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityServerListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        emptyState = findViewById(R.id.empty_state)
 
         serverAdapter = ServerAdapter(
             this,
@@ -28,38 +33,49 @@ class ServerListActivity : AppCompatActivity() {
             AuthManager.getActiveServerId(this),
             {
                 AuthManager.setActiveServerId(this, it.id)
-                Toast.makeText(this, "Server switched", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "服务器已切换", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, com.emby.client.MainActivity::class.java))
                 finish()
             },
             {
-                // Edit server
+                // 编辑服务器
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.putExtra("server", it)
                 startActivity(intent)
             },
             {
-                // Remove server
+                // 删除服务器
                 AuthManager.removeServer(this, it.id)
                 serverAdapter.updateServers(AuthManager.getServers(this), AuthManager.getActiveServerId(this))
-                Toast.makeText(this, "Server removed", Toast.LENGTH_SHORT).show()
+                updateEmptyState()
+                Toast.makeText(this, "服务器已删除", Toast.LENGTH_SHORT).show()
             }
         )
 
         binding.lvServers.adapter = serverAdapter
 
-        binding.btnAddServer.setOnClickListener {
+        findViewById<ImageView>(R.id.fab_add_server).setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
+        updateEmptyState()
     }
 
     override fun onResume() {
         super.onResume()
         serverAdapter.updateServers(AuthManager.getServers(this), AuthManager.getActiveServerId(this))
+        updateEmptyState()
+    }
+
+    private fun updateEmptyState() {
+        val servers = AuthManager.getServers(this)
+        if (servers.isEmpty()) {
+            emptyState.visibility = View.VISIBLE
+            binding.lvServers.visibility = View.GONE
+        } else {
+            emptyState.visibility = View.GONE
+            binding.lvServers.visibility = View.VISIBLE
+        }
     }
 
     class ServerAdapter(
@@ -69,7 +85,7 @@ class ServerListActivity : AppCompatActivity() {
         private val onServerSelect: (ServerProfile) -> Unit,
         private val onServerEdit: (ServerProfile) -> Unit,
         private val onServerRemove: (ServerProfile) -> Unit
-    ) : ArrayAdapter<ServerProfile>(context, android.R.layout.simple_list_item_2, servers) {
+    ) : ArrayAdapter<ServerProfile>(context, R.layout.item_server, servers) {
 
         fun updateServers(newServers: List<ServerProfile>, newActiveServerId: String?) {
             servers = newServers
@@ -80,13 +96,11 @@ class ServerListActivity : AppCompatActivity() {
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val view = convertView ?: android.view.LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false)
+            val view = convertView ?: android.view.LayoutInflater.from(context).inflate(R.layout.item_server, parent, false)
             val server = servers[position]
-            val title = view.findViewById<TextView>(android.R.id.text1)
-            val subtitle = view.findViewById<TextView>(android.R.id.text2)
+            val title = view.findViewById<TextView>(R.id.tvServerName)
 
             title.text = server.url
-            subtitle.text = if (server.id == activeServerId) "Active" else ""
 
             view.setOnClickListener {
                 onServerSelect(server)

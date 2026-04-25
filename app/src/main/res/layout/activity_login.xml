@@ -12,20 +12,57 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Emby Client"
-        android:textSize="32sp"
-        android:textAlignment="center"
+        android:text="添加服务器"
+        android:textSize="20sp"
         android:fontFamily="sans-serif-medium"
-        android:textColor="@color/primary"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="48dp"/>
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="24dp"/>
 
     <EditText
         android:id="@+id/etServerUrl"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:hint="服务器地址 (例如: http://192.168.1.100:8096)"
-        android:inputType="textUri"
+        android:hint="服务器地址"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"
+        android:paddingHorizontal="16dp"
+        android:background="@drawable/rounded_edittext"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <Spinner
+            android:id="@+id/spProtocol"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edittext"
+            android:paddingHorizontal="16dp"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/etPort"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="端口"
+            android:inputType="number"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/rounded_edittext"
+            android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etPath"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="路径(可选,无则留空)"
+        android:inputType="text"
         android:layout_marginBottom="16dp"
         android:paddingHorizontal="16dp"
         android:background="@drawable/rounded_edittext"
@@ -53,25 +90,31 @@
         android:background="@drawable/rounded_edittext"
         android:textSize="16sp"/>
 
-    <Button
-        android:id="@+id/btnLogin"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="登录"
-        android:background="@drawable/rounded_button_primary"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="16dp"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif-medium"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
 
-    <Button
-        android:id="@+id/btnServerList"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="服务器列表"
-        android:background="@drawable/rounded_button_secondary"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif-medium"/>
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="100dp"
+            android:layout_height="48dp"
+            android:text="取消"
+            android:background="@android:color/transparent"
+            android:textColor="@color/primary"
+            android:layout_marginEnd="16dp"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="100dp"
+            android:layout_height="48dp"
+            android:text="连接"
+            android:background="@drawable/rounded_button_primary"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,36 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context=".ui.login.ServerListActivity">
 
+    <!-- 顶部标题 -->
     <LinearLayout
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:alignParentTop="true"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Back"/>
+            android:layout_weight="1"
+            android:text="服务器"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/text_primary"/>
 
-        <Button
-            android:id="@+id/btnAddServer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Server"
-            android:layout_marginStart="16dp"/>
+        <ImageView
+            android:id="@+id/btn_download"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_download"
+            android:layout_marginEnd="16dp"/>
+
+        <ImageView
+            android:id="@+id/btn_more"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_more"/>
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lvServers"
+    <!-- 中间内容区域 -->
+    <LinearLayout
+        android:id="@+id/content_area"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_bar"
+        android:layout_above="@+id/bottom_nav"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-</LinearLayout>
+        <!-- 服务器列表 -->
+        <ListView
+            android:id="@+id/lvServers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="16dp"/>
+
+        <!-- 空状态 -->
+        <LinearLayout
+            android:id="@+id/empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@android:drawable/ic_input_add"
+                android:tint="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="马上添加 Emby 服务器，以开始您的媒体之旅！"
+                android:textSize="16sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="32dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 右下角加号按钮 -->
+    <FloatingActionButton
+        android:id="@+id/fab_add_server"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/primary"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"/>
+
+    <!-- 底部导航栏 -->
+    <LinearLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background"
+        android:orientation="horizontal"
+        android:elevation="8dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/primary">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_dialog_email"
+                android:tint="@android:color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务器"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@android:color/white">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:tint="@color/text_secondary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="聚合视界"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@android:color/white">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_preferences"
+                android:tint="@color/text_secondary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.emby.client.data.AuthManager
-import com.emby.client.ui.login.LoginActivity
+import com.emby.client.ui.login.ServerListActivity
 import com.emby.client.ui.mobile.MobileActivity
 import com.emby.client.ui.tv.TvActivity
 import com.emby.client.utils.DeviceUtils
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         
         if (AuthManager.getActiveServer(this) == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, ServerListActivity::class.java))
             finish()
             return
         }

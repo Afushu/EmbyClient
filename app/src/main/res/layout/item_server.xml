@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/rounded_server_item"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_media_play"
+        android:background="@color/primary"
+        android:tint="@android:color/white"
+        android:scaleType="centerInside"
+        android:layout_marginEnd="16dp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvServerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emby"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/text_primary"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_menu_more"
+        android:tint="@color/text_secondary"/>
+
+</LinearLayout>

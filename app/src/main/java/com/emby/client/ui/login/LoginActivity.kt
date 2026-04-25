@@ -2,6 +2,8 @@ package com.emby.client.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.emby.client.data.AuthManager
@@ -25,6 +27,15 @@ class LoginActivity : AppCompatActivity() {
         binding = com.emby.client.databinding.ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 初始化协议选择器
+        val protocols = arrayOf("HTTPS", "HTTP")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, protocols)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spProtocol.adapter = adapter
+
+        // 初始化端口输入框
+        binding.etPort.setText("443")
+
         editingServer = intent.getSerializableExtra("server") as? ServerProfile
         if (editingServer != null) {
             binding.etServerUrl.setText(editingServer!!.url)
@@ -33,20 +44,33 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             val serverUrl = binding.etServerUrl.text.toString().trim()
+            val protocol = binding.spProtocol.selectedItem.toString()
+            val port = binding.etPort.text.toString().trim()
+            val path = binding.etPath.text.toString().trim()
             val username = binding.etUsername.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (serverUrl.isEmpty() || username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            if (serverUrl.isEmpty() || username.isEmpty() || password.isEmpty() || port.isEmpty()) {
+                Toast.makeText(this, "请填写所有必填字段", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            login(serverUrl, username, password)
+            // 构建完整的服务器URL
+            val fullUrl = buildServerUrl(protocol, serverUrl, port, path)
+            login(fullUrl, username, password)
         }
 
-        binding.btnServerList.setOnClickListener {
-            startActivity(Intent(this, ServerListActivity::class.java))
+        binding.btnCancel.setOnClickListener {
+            finish()
         }
+    }
+
+    private fun buildServerUrl(protocol: String, serverUrl: String, port: String, path: String): String {
+        var url = "$protocol://$serverUrl:$port"
+        if (path.isNotEmpty()) {
+            url += "/$path"
+        }
+        return url
     }
 
     private fun login(serverUrl: String, username: String, password: String) {
@@ -72,13 +96,13 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@LoginActivity, com.emby.client.MainActivity::class.java))
+                    Toast.makeText(this@LoginActivity, "登录成功", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@LoginActivity, ServerListActivity::class.java))
                     finish()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@LoginActivity, "Login failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "登录失败: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
