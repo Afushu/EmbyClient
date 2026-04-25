@@ -15,14 +15,25 @@ android {
         versionName = "1.0"
     }
 
+    signingConfigs {
+        debug {
+            storeFile = file("~/.android/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         debug {
             isDebuggable = true
             isMinifyEnabled = false
+            signingConfig = signingConfigs.debug
         }
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.debug
         }
     }
     compileOptions {
