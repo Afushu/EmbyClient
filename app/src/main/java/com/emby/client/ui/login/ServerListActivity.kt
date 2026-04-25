@@ -11,6 +11,7 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.emby.client.R
 import com.emby.client.data.AuthManager
 import com.emby.client.data.ServerProfile
 import com.emby.client.databinding.ActivityServerListBinding
