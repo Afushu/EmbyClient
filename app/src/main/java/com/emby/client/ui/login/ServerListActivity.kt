@@ -15,6 +15,7 @@ import com.emby.client.R
 import com.emby.client.data.AuthManager
 import com.emby.client.data.ServerProfile
 import com.emby.client.databinding.ActivityServerListBinding
+import com.emby.client.ui.login.LoginActivity
 
 class ServerListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServerListBinding
