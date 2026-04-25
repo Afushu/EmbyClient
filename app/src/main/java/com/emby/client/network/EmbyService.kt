@@ -12,7 +12,7 @@ class EmbyService(private val serverProfile: ServerProfile) {
     }
 
     private val authHeader: String
-        get() = "MediaBrowser Client=EmbyClient, Device=Android, DeviceId=${UUID.randomUUID()}, Version=1.0, Token=${serverProfile.token}"
+        get() = "MediaBrowser Client=\"EmbyClient\", Device=\"Android\", DeviceId=\"${UUID.randomUUID()}\", Version=\"1.0\", Token=\"${serverProfile.token}\""
 
     suspend fun authenticate(username: String, password: String): AuthResponse {
         val authRequest = AuthRequest(username, password)
