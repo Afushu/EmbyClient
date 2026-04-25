@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val api: EmbyApi = RetrofitClient.getClient(serverUrl)
-                val authHeader = "MediaBrowser Client=EmbyClient, Device=Android, DeviceId=${UUID.randomUUID()}, Version=1.0"
+                val authHeader = "MediaBrowser Client=\"EmbyClient\", Device=\"Android\", DeviceId=\"${UUID.randomUUID()}\", Version=\"1.0\""
                 val authRequest = AuthRequest(username, password)
                 val authResponse: AuthResponse = api.authenticate(authRequest, authHeader)
 

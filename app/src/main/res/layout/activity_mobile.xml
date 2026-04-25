@@ -10,10 +10,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mobile Home"
+        android:text="移动主页"
         android:textSize="24sp"
         android:textAlignment="center"
-        android:padding="16dp"/>
+        android:padding="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/text_primary"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"
