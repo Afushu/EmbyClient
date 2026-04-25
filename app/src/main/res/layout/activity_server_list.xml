@@ -88,16 +88,17 @@
     </LinearLayout>
 
     <!-- 右下角加号按钮 -->
-    <FloatingActionButton
+    <ImageView
         android:id="@+id/fab_add_server"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/primary"
+        android:background="@drawable/rounded_button_primary"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"/>
+        android:tint="@android:color/white"
+        android:scaleType="centerInside"/>
 
     <!-- 底部导航栏 -->
     <LinearLayout
