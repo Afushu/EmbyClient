@@ -14,20 +14,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.emby.client.R
 import com.emby.client.data.AuthManager
 import com.emby.client.data.ServerProfile
-import com.emby.client.databinding.ActivityServerListBinding
 import com.emby.client.ui.login.LoginActivity
 
 class ServerListActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityServerListBinding
     private lateinit var serverAdapter: ServerAdapter
     private lateinit var emptyState: LinearLayout
+    private lateinit var lvServers: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityServerListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_server_list)
 
         emptyState = findViewById(R.id.empty_state)
+        lvServers = findViewById(R.id.lvServers)
 
         serverAdapter = ServerAdapter(
             this,
@@ -54,7 +53,7 @@ class ServerListActivity : AppCompatActivity() {
             }
         )
 
-        binding.lvServers.adapter = serverAdapter
+        lvServers.adapter = serverAdapter
 
         findViewById<ImageView>(R.id.fab_add_server).setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -73,10 +72,10 @@ class ServerListActivity : AppCompatActivity() {
         val servers = AuthManager.getServers(this)
         if (servers.isEmpty()) {
             emptyState.visibility = View.VISIBLE
-            binding.lvServers.visibility = View.GONE
+            lvServers.visibility = View.GONE
         } else {
             emptyState.visibility = View.GONE
-            binding.lvServers.visibility = View.VISIBLE
+            lvServers.visibility = View.VISIBLE
         }
     }
 
